@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<uexplugins>
+    <plugin name="uexSocketMgr">
+        <method name="createUDPSocket"></method>
+        <method name="createTCPSocket"></method>
+        <method name="closeSocket"></method>
+        <method name="setTimeOut"></method>
+        <method name="setInetAddressAndPort"></method>
+        <method name="sendData"></method>
+    </plugin>
+</uexplugins>

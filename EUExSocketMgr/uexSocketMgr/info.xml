@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uexplugins>
+    <plugin
+        uexName="uexSocketMgr" version="3.0.5" build="5">
+        <info>5:解决使用base64格式传输数据ios发送不成功的问题</info>
+        <build>4:调整onData方法的回调参数</build>
+        <build>0:Socket功能插件</build>
+    </plugin>
+</uexplugins>
