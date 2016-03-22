@@ -9,14 +9,24 @@
 #import <Foundation/Foundation.h>
 #import "EUExBase.h"
 
-#define F_TYEP_TCP				0
-#define F_TYEP_UDP				1
 
-@interface EUExSocketMgr : EUExBase {
-	NSMutableDictionary *sobjDict;
-    int dataType;
-}
 
-- (void)uexSocketWithOpId:(int)inOpId data:(NSString*)inData;
--(void)uexSocketDidDisconnect:(NSString *)opid;
+
+typedef NS_ENUM(NSInteger,uexSocketMgrDataType){
+    uexSocketMgrDataTypeUTF8 = 0,
+    uexSocketMgrDataTypeBase64,
+    uexSocketMgrDataTypeGBK,
+};
+typedef NS_ENUM(NSInteger,uexSocketMgrSocketType){
+    uexSocketMgrSocketTypeTCP = 0,
+    uexSocketMgrSocketTypeUDP,
+};
+
+@interface EUExSocketMgr : EUExBase
+
+- (void)onDataCallbackWithOpID:(NSInteger)opid JSONString:(NSString *)json;
+- (void)disconnectCallbackWithOpID:(NSInteger)opid;
+
+
+
 @end

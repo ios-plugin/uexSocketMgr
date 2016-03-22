@@ -13,11 +13,20 @@
 #import "AsyncSocket.h"
 #import "EUExBaseDefine.h"
 
+
+
+
+@interface EUExSocketMgr()
+@property (nonatomic,strong)NSMutableDictionary *socketObjs;
+
+@end
+
+
 @implementation EUExSocketMgr
 
 -(id)initWithBrwView:(EBrowserView *) eInBrwView{
     if (self = [super initWithBrwView:eInBrwView]) {
-        sobjDict = [[NSMutableDictionary alloc] initWithCapacity:UEX_PLATFORM_CALL_ARGS];
+        _socketObjs = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -26,150 +35,117 @@
 #pragma mark
 
 -(void)dealloc{
-    if (sobjDict) {
-        for (EUExSocket *sock in [sobjDict allValues]) {
-            if (sock) {
-                //[sock release];
-                sock = nil;
-            }
-        }
-        [sobjDict release];
-        sobjDict = nil;
-    }
-    [super dealloc];
+    [self.socketObjs removeAllObjects];
+    self.socketObjs = nil;
 }
 
 //创建UDPSocket
 -(void)createUDPSocket:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
-    NSString *inPort = [inArguments objectAtIndex:1];
-    //12.29----xll
-    EUExSocket *udpSocket = [sobjDict objectForKey:inOpId];
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
+    NSInteger inPort = [[inArguments objectAtIndex:1] integerValue];
+    EUExSocket *udpSocket = [self.socketObjs objectForKey:@(inOpId)];
     if (udpSocket) {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
         return;
     }
-    
-    //dataType 0是正常字符串 1特殊需求的处理逻辑
+    uexSocketMgrDataType dataType = uexSocketMgrDataTypeUTF8;
     if ([inArguments isKindOfClass:[NSMutableArray class]] && [inArguments count]>2) {
-        NSString *dataType_str = [inArguments objectAtIndex:2];
-        if ([dataType_str isKindOfClass:[NSString class]] && dataType_str.length>0) {
-            dataType = [dataType_str intValue];
-        }else{
-            dataType = 0;
-        }
-    }else{
-        dataType = 0;
+        dataType = [inArguments[2] integerValue];
     }
-    udpSocket = [[EUExSocket alloc] initWithUExObj:self socketType:F_TYEP_UDP];
+    udpSocket = [[EUExSocket alloc] initWithEUExObj:self socketType:uexSocketMgrSocketTypeUDP];
     udpSocket.opID = inOpId;
-    udpSocket.localPort = [inPort intValue];
+    udpSocket.localPort = inPort;
     udpSocket.dataType = dataType;
-    BOOL succ =  [udpSocket creatUDPSocketWithPort:[inPort intValue]];
+    BOOL succ =  [udpSocket creatUDPSocketWithPort:inPort];
     if (succ) {
-        [sobjDict setObject:udpSocket forKey:inOpId];
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        [self.socketObjs setObject:udpSocket forKey:@(inOpId)];
+        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
     }else {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
     }
-    [udpSocket release];
+
 }
 
 //创建TCPSocket
 -(void)createTCPSocket:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
-    EUExSocket *tcpSocket = [sobjDict objectForKey:inOpId];
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
+    EUExSocket *tcpSocket = [self.socketObjs objectForKey:@(inOpId)];
     if (tcpSocket) {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
         return;
     }
-    
-    //dataType 0是正常字符串 1特殊需求的处理逻辑
+    uexSocketMgrDataType dataType = uexSocketMgrDataTypeUTF8;
     if ([inArguments isKindOfClass:[NSMutableArray class]] && [inArguments count]>1) {
-        NSString *dataType_str = [inArguments objectAtIndex:1];
-        if ([dataType_str isKindOfClass:[NSString class]] && dataType_str.length>0) {
-            dataType = [dataType_str intValue];
-        }else{
-            dataType = 0;
-        }
-    }else{
-        dataType = 0;
+        dataType = [inArguments[1] integerValue];
     }
     
-    tcpSocket = [[EUExSocket alloc] initWithUExObj:self socketType:F_TYEP_TCP];
+    tcpSocket = [[EUExSocket alloc] initWithEUExObj:self socketType:uexSocketMgrSocketTypeTCP];
     tcpSocket.opID = inOpId;
     tcpSocket.dataType = dataType;
-    [sobjDict setObject:tcpSocket forKey:inOpId];
-    [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-    [tcpSocket release];
+    [self.socketObjs setObject:tcpSocket forKey:@(inOpId)];
+    [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+
 }
 
 -(void)closeSocket:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
-    EUExSocket *object = [sobjDict objectForKey:inOpId];
-    if (object!=nil) {
-        [object CloseSocket:inOpId];
-        [sobjDict removeObjectForKey:inOpId];
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
+    EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
+    if (object) {
+        [object closeSocket:inOpId];
+        [self.socketObjs removeObjectForKey:@(inOpId)];
     }
 }
 
 -(void)setTimeOut:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
-    NSString *inTimeOut = [inArguments objectAtIndex:1];
-    EUExSocket *object = [sobjDict objectForKey:inOpId];
-    if (object) {
-        //设置时间超时
-        if (object.sockType == F_TYEP_TCP) {
-            object.timeOutInter = [inTimeOut intValue];
-        }
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
+    NSInteger inTimeOut = [[inArguments objectAtIndex:1] integerValue];
+    EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
+    if (object && object.socketType == uexSocketMgrSocketTypeTCP) {
+        object.timeOutInter = inTimeOut;
     }
 }
 
 -(void)setInetAddressAndPort:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     NSString *inRemoteAddress = [inArguments objectAtIndex:1];
-    NSString *inRemotePort = [inArguments objectAtIndex:2];
-    EUExSocket *object = [sobjDict objectForKey:inOpId];
-    if (object!=nil) {
-        object.Port = [inRemotePort intValue];
+    NSInteger inRemotePort = [[inArguments objectAtIndex:2] integerValue];
+    EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
+    if (object) {
+        object.Port = inRemotePort;
         object.Host = inRemoteAddress;
-        [object connectServer:inRemoteAddress port:[inRemotePort intValue]];
-    }else {
-        //
+        [object connectServer:inRemoteAddress port:(int)inRemotePort];
     }
 }
 
 -(void)sendData:(NSMutableArray *)inArguments {
-    NSString *inOpId = [inArguments objectAtIndex:0];
+    NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     NSString *inMsg = [inArguments objectAtIndex:1];
-    EUExSocket *object = [sobjDict objectForKey:inOpId];
+    EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
     if (object!=nil) {
         [object sendMsg:inMsg];
     }else {
-        [self jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:[inOpId intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
     }
 }
 
--(void)uexSocketWithOpId:(int)inOpId data:(NSString*)inData{
-    inData = [inData stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onData!=null){uexSocketMgr.onData(%d,\'%@\')}",inOpId,inData];
-    [meBrwView stringByEvaluatingJavaScriptFromString:jsStr];
+
+- (void)onDataCallbackWithOpID:(NSInteger)opid JSONString:(NSString *)json{
+    json = [json stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onData){uexSocketMgr.onData(%@,'%@')}",@(opid),json];
+    [EUtility brwView:self.meBrwView evaluateScript:jsStr];
+
 }
 
--(void)uexSocketDidDisconnect:(NSString *)opid{
-    NSString *jsstr = [NSString stringWithFormat:@"if(uexSocketMgr.onDisconnected!=null){uexSocketMgr.onDisconnected(%d)}",[opid intValue]];
-    [meBrwView stringByEvaluatingJavaScriptFromString:jsstr];
+- (void)disconnectCallbackWithOpID:(NSInteger)opid{
+    NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onDisconnected){uexSocketMgr.onDisconnected(%ld)}",(long)opid];
+    [EUtility brwView:self.meBrwView evaluateScript:jsStr];
 }
+
+
 
 -(void)clean{
-    if (sobjDict) {
-        for (EUExSocket *sock in [sobjDict allValues]) {
-            if (sock) {
-                //[sock release];
-                sock = nil;
-            }
-        }
-    }
+    [self.socketObjs removeAllObjects];
+    self.socketObjs = nil;
 }
 
 @end

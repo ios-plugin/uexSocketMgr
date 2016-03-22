@@ -15,11 +15,7 @@
 #import "JSON.h"
 
 @implementation EUExSocket
-@synthesize tcp_client,udp_client;
-@synthesize xml;
-@synthesize sockType,Port,Host,localPort;
-@synthesize opID,timeOutInter;
-@synthesize dataType;
+
 
 #pragma -mark 字符处理
 
@@ -84,56 +80,61 @@
     return str;
 }
 
--(id) initWithUExObj:(EUExSocketMgr *)UExObj_ socketType:(int)socketType_{
-	self.sockType = socketType_;
-    UExObj = UExObj_;
-	return self;
+- (instancetype)initWithEUExObj:(EUExSocketMgr *)euexObj socketType:(uexSocketMgrSocketType)socketType
+{
+    self = [super init];
+    if (self) {
+        self.euexObj = euexObj;
+        self.socketType = socketType;
+    }
+    return self;
 }
 
+
+
 //创建udpsocket对象，绑定端口
-- (BOOL)creatUDPSocketWithPort:(int )port{
+- (BOOL)creatUDPSocketWithPort:(UInt16)port{
     AsyncUdpSocket *udpSocket = [[AsyncUdpSocket alloc] initIPv4];
 	[udpSocket setDelegate:self];
 	NSError *error;
-    self.udp_client = udpSocket;
-	[udpSocket release];
-	[udp_client setDelegate:self];
-	[udp_client enableBroadcast:YES error:nil];
+    self.UDPClient = udpSocket;
+	[self.UDPClient setDelegate:self];
+	[self.UDPClient enableBroadcast:YES error:nil];
 	if (port!=0) {
-		[udp_client bindToPort:port error:&error];
+		[self.UDPClient bindToPort:port error:&error];
 	}
-	[udp_client receiveWithTimeout:-1 tag:0];
+	[self.UDPClient receiveWithTimeout:-1 tag:0];
 	return YES;
 }
 
 //通过IP和端口连接服务器
-- (BOOL) connectServer: (NSString *) hostIP port:(int) hostPort{
-    if (sockType == 0){
-        if (tcp_client == nil) {
-            tcp_client = [[AsyncSocket alloc] init];
-            [tcp_client setDelegate:self];
+- (BOOL) connectServer: (NSString *) hostIP port:(UInt16) hostPort{
+
+    if (self.socketType == uexSocketMgrSocketTypeTCP){
+        if (self.TCPClient == nil) {
+            self.TCPClient = [[AsyncSocket alloc] init];
+            [self.TCPClient setDelegate:self];
             NSError *err = nil;
             PluginLog(@"timeout = %",self.timeOutInter);
             BOOL succ;
             if (self.timeOutInter == 0) {
-                succ =  [tcp_client connectToHost:hostIP onPort:hostPort error:&err];
+                succ =  [self.TCPClient connectToHost:hostIP onPort:hostPort error:&err];
             }else {
-                succ =  [tcp_client connectToHost:hostIP onPort:hostPort withTimeout:(self.timeOutInter/1000) error:&err];
+                succ =  [self.TCPClient connectToHost:hostIP onPort:hostPort withTimeout:(self.timeOutInter/1000) error:&err];
             }
-            
             if (!succ) {
                 NSLog(@"%@ %@", [err description], [err localizedDescription]);
-                tcp_client = nil;
-                [UExObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+                self.TCPClient = nil;
+                [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
                 return NO;
             } else {
                 PluginLog(@"Connect0000!!!");
-                [UExObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+                [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
                 return YES;
             }
         }
 	}
-	if (sockType == 1) {
+	if (self.socketType == uexSocketMgrSocketTypeUDP) {
 		self.Port = hostPort;
 		self.Host = hostIP;
 		return YES;
@@ -149,63 +150,57 @@
     NSMutableString* newStr = [NSMutableString stringWithString:msg];
     [newStr replaceOccurrencesOfString:@"\n" withString:@"\r\n" options:NSLiteralSearch range:NSMakeRange(0, [newStr length])];
     
-	NSData *data = [newStr dataUsingEncoding:NSUTF8StringEncoding];
-    //dataType 0是正常字符串 1特殊需求的处理逻辑
-    if (1 == dataType) {
-        //解码
-        NSData *nsdataFromBase64String = [[NSData alloc]
-                                          initWithBase64EncodedString:msg options:0];
-        data = nsdataFromBase64String;
-//        NSString *base64Decoded = [[NSString alloc]
-//                                   initWithData:nsdataFromBase64String encoding:NSUTF8StringEncoding];
-//        NSLog(@"Decoded: %@", base64Decoded);
-        
-        /*
-         int length = msg.length/8;
-         Byte bytes[msg.length/8];
-         for (int i=0; i<length; i++) {
-         NSString *_str = [msg substringWithRange:NSMakeRange(i*8, 8)];
-         //NSLog(@"_str %@",_str);
-         int lTemp = strtol([_str cStringUsingEncoding:NSUTF8StringEncoding], NULL, 2);
-         //NSLog(@"%c",lTemp);
-         bytes[i] = lTemp;
-         }
-         NSData *newData = [[[NSData alloc] initWithBytes:bytes length:length] autorelease];
-         data = newData;
-         */
-        
-    }
-	if (sockType == F_TYEP_UDP) {
-		BOOL succ = NO;
-		if (udp_client) {
-            //传数据,
-			succ = [udp_client sendData:data toHost:Host port:Port withTimeout:-1 tag:0];
-		}
-        
-		if (succ) {
-			[UExObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-		}else {
-			[UExObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    
+    NSData *data;
+    switch (self.dataType) {
+        case uexSocketMgrDataTypeUTF8: {
+            data = [newStr dataUsingEncoding:NSUTF8StringEncoding];
+            break;
+        }
+        case uexSocketMgrDataTypeBase64: {
+             data = [[NSData alloc]initWithBase64EncodedString:msg options:0];
+            break;
+        }
+        case uexSocketMgrDataTypeGBK: {
             
-		}
-	}else if (sockType == F_TYEP_TCP) {
-		[tcp_client writeData:data withTimeout:-1 tag:1];
-		[UExObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-	}
+            NSStringEncoding encode = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            data = [newStr dataUsingEncoding:encode];
+            break;
+        }
+    }
+
+    if (self.socketType == uexSocketMgrSocketTypeUDP) {
+        BOOL succ = NO;
+        if (self.UDPClient) {
+            //传数据,
+            succ = [self.UDPClient sendData:data toHost:self.Host port:self.Port withTimeout:-1 tag:0];
+        }
+        
+        if (succ) {
+            [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        }else {
+            [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+            
+        }
+    }else if (self.socketType == uexSocketMgrSocketTypeTCP) {
+        [self.TCPClient writeData:data withTimeout:-1 tag:1];
+        [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    }
+    
 }
 
+
 //关闭
-- (NSInteger)CloseSocket:(NSString *)inOpId{
-	if (tcp_client &&[tcp_client isConnected])
-	{
-		[tcp_client disconnectAfterReadingAndWriting];
-		[tcp_client disconnect];
-	}
-	if (udp_client) {
-		[udp_client close];
-	}
-	return 0;
+- (void)closeSocket:(NSInteger)inOpId{
+    if (self.TCPClient &&[self.TCPClient isConnected]){
+        [self.TCPClient disconnectAfterReadingAndWriting];
+        [self.TCPClient disconnect];
+    }
+    if (self.UDPClient) {
+        [self.UDPClient close];
+    }
 }
+
 
 //UDP delegate
 
@@ -224,42 +219,35 @@
 
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock didReceiveData:(NSData *)data withTag:(long)tag fromHost:(NSString *)host port:(UInt16)port
 {
-    NSString *resultString = nil;
-    //dataType 0是正常字符串 1是客户特殊需求
-    if (1 == dataType) {
-        if (data)
-        {
-         //编码
-         resultString = [data base64EncodedStringWithOptions:0];
-            /*
-             Byte *myb = (Byte*)[data bytes];
-             for (int i = 0; i < data.length; i++) {
-             NSString *str = [self intStringToBinary:myb[i]];
-             if (!resultString) {
-             resultString = [NSString stringWithFormat:@"%@", str];
-             }else{
-             resultString = [NSString stringWithFormat:@"%@%@", resultString, str];
-             }
-             }
-             */
+    NSString *resultString = @"";
+    switch (self.dataType) {
+        case uexSocketMgrDataTypeUTF8:{
+            resultString = [EUtility transferredString:data];
+            break;
         }
-        
-        //else{//正常情况resultString = [EUtility transferredString:data];}
-        
-    }else{
-        //正常情况
-        resultString = [EUtility transferredString:data];
+        case uexSocketMgrDataTypeBase64:{
+            if (data){
+                resultString = [data base64EncodedStringWithOptions:0];
+            }
+            break;
+        }
+        case uexSocketMgrDataTypeGBK: {
+            NSStringEncoding encode = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            resultString = [[NSString alloc]initWithData:data encoding:encode];
+            break;
+        }
     }
+    
+    
     NSMutableDictionary * jsDic = [NSMutableDictionary dictionary];
     NSString * portStr = [NSString stringWithFormat:@"%d",port];
-    [jsDic setObject:host forKey:@"host"];
-    [jsDic setObject:portStr forKey:@"port"];
-    [jsDic setObject:resultString forKey:@"data"];
-    
-    NSString *getString = [jsDic JSONFragment];
-    [UExObj uexSocketWithOpId:[self.opID intValue] data:getString];
+    [jsDic setValue:host forKey:@"host"];
+    [jsDic setValue:portStr forKey:@"port"];
+    [jsDic setValue:resultString forKey:@"data"];
+    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic JSONFragment]];
     [sock receiveWithTimeout:-1 tag:0];
     return YES;
+
 }
 
 - (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error
@@ -280,18 +268,15 @@
 
 - (void)onSocket:(AsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port{
 	PluginLog(@"connect success");
-	[UExObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:[self.opID intValue] dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+	[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
 	[sock readDataWithTimeout:-1 tag:0];
 }
 
 - (void)onSocketDidDisconnect:(AsyncSocket *)sock
 {
-	NSString *msg = @"Sorry this connect is failure";
-	NSLog(@"msg = %@",msg);
-	[UExObj uexSocketDidDisconnect:self.opID];
-	if (tcp_client) {
-		[tcp_client release];
-		tcp_client = nil;
+    [self.euexObj disconnectCallbackWithOpID:self.opID];
+	if (self.TCPClient) {
+		self.TCPClient = nil;
 	}
 }
 
@@ -302,69 +287,45 @@
 #pragma -mark tcp接受数据
 
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{
-	NSString *resultString = nil;
-    //dataType 0是正常字符串 1是客户特殊需求
-    if (1 == dataType) {
-        //编码
-        resultString = [data base64EncodedStringWithOptions:0];
-        
-        /*
-        if (data) {
-            Byte *myb = (Byte*)[data bytes];
-            for (int i = 0; i < data.length; i++) {
-                NSString *str = [self intStringToBinary:myb[i]];
-                if (!resultString) {
-                    resultString = [NSString stringWithFormat:@"%@", str];
-                }else{
-                    resultString = [NSString stringWithFormat:@"%@%@", resultString, str];
-                }
-            }
-        }else{
+	NSString *resultString = @"";
+    
+    switch (self.dataType) {
+        case uexSocketMgrDataTypeUTF8: {
             NSString* dataToStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (dataToStr == nil || [dataToStr isKindOfClass:[NSNull class]]==YES ) {
+            if (!dataToStr) {
                 data = [self changeData:data];
             }
-            [dataToStr release];
             resultString = [EUtility transferredString:data];
+            break;
         }
-         */
-    }else{
-        NSString* dataToStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        if (dataToStr == nil || [dataToStr isKindOfClass:[NSNull class]]==YES ) {
-            data = [self changeData:data];
+        case uexSocketMgrDataTypeBase64: {
+            resultString = [data base64EncodedStringWithOptions:0];
+            break;
         }
-        [dataToStr release];
-        resultString = [EUtility transferredString:data];
+        case uexSocketMgrDataTypeGBK: {
+            NSStringEncoding encode = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+            resultString = [[NSString alloc]initWithData:data encoding:encode];
+            break;
+        }
     }
+
     NSMutableDictionary * jsDic = [NSMutableDictionary dictionary];
-    [jsDic setObject:@"" forKey:@"host"];
-    [jsDic setObject:@"" forKey:@"port"];
-    [jsDic setObject:resultString forKey:@"data"];
+    [jsDic setValue:@"" forKey:@"host"];
+    [jsDic setValue:@"" forKey:@"port"];
+    [jsDic setValue:resultString forKey:@"data"];
     
-    NSString *getString = [jsDic JSONFragment];
-	[UExObj uexSocketWithOpId:[self.opID intValue] data:getString];
-	[sock readDataWithTimeout:-1 tag:0];
+    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic JSONFragment]];
+    [sock readDataWithTimeout:-1 tag:0];
+
 }
 
 -(void)dealloc{
-	PluginLog(@"EUExSocket retain count is %d",[self retainCount]);
-	PluginLog(@"EUExSocket dealloc is %x", self);
- 	if (udp_client) {
-		[udp_client release];
-        udp_client = nil;
+ 	if (self.UDPClient) {
+        self.UDPClient = nil;
  	}
-	
- 	if (tcp_client) {
-		[tcp_client release];
-		tcp_client = nil;
+ 	if (self.TCPClient) {
+		self.TCPClient = nil;
  	}
-	
-	//[xml release];
-	[opID release];
-    if (Host) {
-        [Host release];
-    }
-	[super dealloc];
 }
 @end
 

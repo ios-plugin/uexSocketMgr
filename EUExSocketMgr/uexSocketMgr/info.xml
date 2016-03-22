@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexSocketMgr" version="3.0.6" build="6">
-        <info>6:添加IDE支持</info>
+        uexName="uexSocketMgr" version="3.0.7" build="7">
+        <info>7:收发数据支持base64以及GBK编码</info>
+        <build>6:添加IDE支持</build>
         <build>5:解决使用base64格式传输数据ios发送不成功的问题</build>
         <build>4:调整onData方法的回调参数</build>
         <build>0:Socket功能插件</build>

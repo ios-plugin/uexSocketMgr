@@ -10,8 +10,8 @@
 }
 @property (nonatomic, assign) EBrowserView *meBrwView;
 - (id)initWithBrwView:(EBrowserView *)eInBrwView;
-- (void)jsSuccessWithName:(NSString *)inCallbackName opId:(int)inOpId dataType:(int)inDataType strData:(NSString*)inData;
-- (void)jsSuccessWithName:(NSString *)inCallbackName opId:(int)inOpId dataType:(int)inDataType intData:(int)inData;
+- (void)jsSuccessWithName:(NSString *)inCallbackName opId:(NSInteger)inOpId dataType:(NSInteger)inDataType strData:(NSString*)inData;
+- (void)jsSuccessWithName:(NSString *)inCallbackName opId:(NSInteger)inOpId dataType:(NSInteger)inDataType intData:(NSInteger)inData;
 - (void)jsFailedWithOpId:(int)inOpId errorCode:(int)inErrorCode errorDes:(NSString*)inErrorDes;
 - (void)clean;
 - (void)stopNetService;

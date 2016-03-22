@@ -99,8 +99,8 @@
 			children = (
 				5A9FEFA31890A4A300E16C52 /* engineHeader */,
 				5A9FEFA71890A4A300E16C52 /* sourceCode */,
-				5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */,
 				3C76C47C18AB716900BBE8D1 /* EUExSocketMgr.h */,
+				5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */,
 				5A9FEF801890A3A700E16C52 /* Supporting Files */,
 			);
 			path = EUExSocketMgr;
@@ -162,7 +162,7 @@
 		5A9FEF721890A3A700E16C52 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = xll;
 			};
 			buildConfigurationList = 5A9FEF751890A3A700E16C52 /* Build configuration list for PBXProject "EUExSocketMgr" */;
@@ -270,10 +270,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexSocketMgr/";
 				DSTROOT = /tmp/EUExSocketMgr.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = uexSocketMgr;
 				SKIP_INSTALL = YES;
@@ -284,10 +286,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexSocketMgr/";
 				DSTROOT = /tmp/EUExSocketMgr.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = uexSocketMgr;
 				SKIP_INSTALL = YES;
