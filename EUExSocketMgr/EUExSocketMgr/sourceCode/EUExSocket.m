@@ -17,7 +17,7 @@
 @implementation EUExSocket
 
 
-#pragma -mark 字符处理
+#pragma mark - 字符处理
 
 //将nsdata中的非法字符替换为A 0x41
 -(NSData*)changeData:(NSData*)data{
@@ -129,7 +129,9 @@
                 return NO;
             } else {
                 PluginLog(@"Connect0000!!!");
-                [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+                
+                //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+                //TCP链接成功的回调在delegate中处理
                 return YES;
             }
         }
@@ -143,7 +145,7 @@
 }
 
 
-#pragma -mark 发送数据
+#pragma mark - 发送数据
 
 - (void)sendMsg: (NSString *)msg {
 	PluginLog(@"<<Chao-->sendMsg-->msg: %@",msg);
@@ -215,7 +217,7 @@
 	PluginLog(@"%d:%@",[sock localPort],[sock localHost]);
 }
 
-#pragma -mark Udp接受数据
+#pragma mark - Udp接受数据
 
 - (BOOL)onUdpSocket:(AsyncUdpSocket *)sock didReceiveData:(NSData *)data withTag:(long)tag fromHost:(NSString *)host port:(UInt16)port
 {
@@ -284,7 +286,7 @@
 	PluginLog(@"send success");
 }
 
-#pragma -mark tcp接受数据
+#pragma mark - tcp接受数据
 
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{
 	NSString *resultString = @"";
