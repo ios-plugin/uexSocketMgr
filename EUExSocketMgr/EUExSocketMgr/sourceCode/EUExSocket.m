@@ -139,6 +139,7 @@
 	if (self.socketType == uexSocketMgrSocketTypeUDP) {
 		self.Port = hostPort;
 		self.Host = hostIP;
+        [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
 		return YES;
     }
 	return NO;
