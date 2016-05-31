@@ -9,16 +9,12 @@
 #import "EUExSocketMgr.h"
 #import "EUtility.h"
 #import "EUExSocket.h"
-#import "AsyncUDPSocket.h"
-#import "AsyncSocket.h"
 #import "EUExBaseDefine.h"
-
 
 
 
 @interface EUExSocketMgr()
 @property (nonatomic,strong)NSMutableDictionary *socketObjs;
-
 @end
 
 
@@ -27,6 +23,9 @@
 -(id)initWithBrwView:(EBrowserView *) eInBrwView{
     if (self = [super initWithBrwView:eInBrwView]) {
         _socketObjs = [NSMutableDictionary dictionary];
+        
+
+        
     }
     return self;
 }

@@ -7,8 +7,6 @@
 //
 
 #import "EUExSocket.h"
-#import "AsyncUDPSocket.h"
-#import "AsyncSocket.h"
 #import "EUExSocketMgr.h"
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
@@ -94,26 +92,28 @@
 
 //创建udpsocket对象，绑定端口
 - (BOOL)creatUDPSocketWithPort:(UInt16)port{
-    AsyncUdpSocket *udpSocket = [[AsyncUdpSocket alloc] initIPv4];
-	[udpSocket setDelegate:self];
+    self.UDPClient = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 	NSError *error;
-    self.UDPClient = udpSocket;
-	[self.UDPClient setDelegate:self];
 	[self.UDPClient enableBroadcast:YES error:nil];
+    BOOL isBind = NO;
 	if (port!=0) {
-		[self.UDPClient bindToPort:port error:&error];
+	 isBind =[self.UDPClient bindToPort:port error:&error];
 	}
-	[self.UDPClient receiveWithTimeout:-1 tag:0];
-	return YES;
+    if (![self.UDPClient beginReceiving:&error])
+    {
+        NSLog(@"Error receiving:%@", error);
+        //return NO;
+    }
+    
+	return isBind;
 }
 
 //通过IP和端口连接服务器
-- (BOOL) connectServer: (NSString *) hostIP port:(UInt16) hostPort{
+- (BOOL)connectServer: (NSString *) hostIP port:(UInt16) hostPort{
 
     if (self.socketType == uexSocketMgrSocketTypeTCP){
         if (self.TCPClient == nil) {
-            self.TCPClient = [[AsyncSocket alloc] init];
-            [self.TCPClient setDelegate:self];
+            self.TCPClient = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
             NSError *err = nil;
             PluginLog(@"timeout = %",self.timeOutInter);
             BOOL succ;
@@ -130,8 +130,6 @@
             } else {
                 PluginLog(@"Connect0000!!!");
                 
-                //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-                //TCP链接成功的回调在delegate中处理
                 return YES;
             }
         }
@@ -173,24 +171,20 @@
     }
 
     if (self.socketType == uexSocketMgrSocketTypeUDP) {
-        BOOL succ = NO;
         if (self.UDPClient) {
             //传数据,
-            succ = [self.UDPClient sendData:data toHost:self.Host port:self.Port withTimeout:-1 tag:0];
+            [self.UDPClient sendData:data toHost:self.Host port:self.Port withTimeout:-1 tag:0];
+           
         }
         
-        if (succ) {
-            [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-        }else {
-            [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
-            
-        }
-    }else if (self.socketType == uexSocketMgrSocketTypeTCP) {
+    }else{
+        
         [self.TCPClient writeData:data withTimeout:-1 tag:1];
-        [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        
     }
-    
 }
+
+
 
 
 //关闭
@@ -206,21 +200,20 @@
 
 
 //UDP delegate
-
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error
-{
-	PluginLog(@"NO SEND");
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error{
+    PluginLog(@"NO SEND");
+    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
 }
 
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didSendDataWithTag:(long)tag
-{
-	PluginLog(@"SEND SUCCESS");
-	PluginLog(@"%d:%@",[sock localPort],[sock localHost]);
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag{
+    PluginLog(@"SEND SUCCESS");
+    PluginLog(@"%d:%@",[sock localPort],[sock localHost]);
+    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
 }
-
 #pragma mark - Udp接受数据
-
-- (BOOL)onUdpSocket:(AsyncUdpSocket *)sock didReceiveData:(NSData *)data withTag:(long)tag fromHost:(NSString *)host port:(UInt16)port
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
+      fromAddress:(NSData *)address
+withFilterContext:(id)filterContext
 {
     NSString *resultString = @"";
     switch (self.dataType) {
@@ -240,58 +233,53 @@
             break;
         }
     }
-    
-    
     NSMutableDictionary * jsDic = [NSMutableDictionary dictionary];
-    NSString * portStr = [NSString stringWithFormat:@"%d",port];
-    [jsDic setValue:host forKey:@"host"];
+    NSString * portStr = [NSString stringWithFormat:@"%d",[GCDAsyncUdpSocket portFromAddress:address]];
+    [jsDic setValue:[GCDAsyncUdpSocket hostFromAddress:address] forKey:@"host"];
     [jsDic setValue:portStr forKey:@"port"];
     [jsDic setValue:resultString forKey:@"data"];
     [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic JSONFragment]];
-    [sock receiveWithTimeout:-1 tag:0];
-    return YES;
 
 }
 
-- (void)onUdpSocket:(AsyncUdpSocket *)sock didNotReceiveDataWithTag:(long)tag dueToError:(NSError *)error
-{
-	PluginLog(@"Not Receive");
+- (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error{
+    PluginLog(@"Close socket");
 }
 
-- (void)onUdpSocketDidClose:(AsyncUdpSocket *)sock
-{
-	PluginLog(@"Close socket");
-}
+
+
+
+
 
 //TCP delegate
-- (void)onSocket:(AsyncSocket *)sock willDisconnectWithError:(NSError *)err
-{
-    PluginLog(@"Error");
+- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port{
+    PluginLog(@"connect success");
+    	[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    	[sock readDataWithTimeout:-1 tag:0];
 }
 
-- (void)onSocket:(AsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port{
-	PluginLog(@"connect success");
-	[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-	[sock readDataWithTimeout:-1 tag:0];
-}
-
-- (void)onSocketDidDisconnect:(AsyncSocket *)sock
-{
+- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
     [self.euexObj disconnectCallbackWithOpID:self.opID];
-	if (self.TCPClient) {
-		self.TCPClient = nil;
-	}
+    if (self.TCPClient) {
+        self.TCPClient = nil;
+    }
 }
 
-- (void)onSocket:(AsyncSocket *)sock didWriteDataWithTag:(long)tag{
-	PluginLog(@"send success");
+- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag{
+    PluginLog(@"send success");
+    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+   
 }
-
+- (NSTimeInterval) socket:(GCDAsyncSocket *)sock shouldTimeoutWriteWithTag:(long)tag elapsed:(NSTimeInterval)elapsed bytesDone:(NSUInteger)length {
+    PluginLog(@"发送数据到服务器超时");
+    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    return -1;
+}
 #pragma mark - tcp接受数据
 
-- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{
+//- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{
+- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{
 	NSString *resultString = @"";
-    
     switch (self.dataType) {
         case uexSocketMgrDataTypeUTF8: {
             NSString* dataToStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];

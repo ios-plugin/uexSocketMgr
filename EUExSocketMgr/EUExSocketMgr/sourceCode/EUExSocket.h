@@ -7,18 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AsyncSocket.h"
-#import "AsyncUdpSocket.h"
+#import <CocoaAsyncSocket/CocoaAsyncSocket.h>
 #import "EUExSocketMgr.h"
 
 
 
 
-@interface EUExSocket : NSObject <AsyncSocketDelegate,AsyncUdpSocketDelegate>
+@interface EUExSocket : NSObject <GCDAsyncSocketDelegate,GCDAsyncUdpSocketDelegate>
 
 @property (nonatomic,weak)EUExSocketMgr *euexObj;
-@property (nonatomic,strong)AsyncUdpSocket *UDPClient;
-@property (nonatomic,strong)AsyncSocket *TCPClient;
+@property (nonatomic,strong)GCDAsyncUdpSocket *UDPClient;
+@property (nonatomic,strong)GCDAsyncSocket *TCPClient;
 @property (nonatomic,strong)NSData *xml;
 @property (nonatomic,assign)NSInteger opID;
 @property (nonatomic,strong)NSString *Host;

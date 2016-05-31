@@ -7,12 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090A46711CFD756900534E8C /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */; };
+		090A46751CFD75FD00534E8C /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */; };
 		5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9FEF7D1890A3A700E16C52 /* Foundation.framework */; };
 		5A9FEF851890A3A700E16C52 /* EUExSocketMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */; };
 		5A9FEFB11890A4A300E16C52 /* EUExSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		090A46741CFD75EE00534E8C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				090A46751CFD75FD00534E8C /* CocoaAsyncSocket.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		3C5191C319F0C5B600130716 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		3C5191C419F0C5B600130716 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
 		3C5191C519F0C5B600130716 /* MD5Digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5Digest.h; sourceTree = "<group>"; };
@@ -32,8 +48,6 @@
 		5A9FEFA41890A4A300E16C52 /* EUExBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBase.h; sourceTree = "<group>"; };
 		5A9FEFA51890A4A300E16C52 /* EUExBaseDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBaseDefine.h; sourceTree = "<group>"; };
 		5A9FEFA61890A4A300E16C52 /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
-		5A9FEFA81890A4A300E16C52 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
-		5A9FEFAA1890A4A300E16C52 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
 		5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExSocket.h; sourceTree = "<group>"; };
 		5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUExSocket.m; sourceTree = "<group>"; };
 		5A9FEFAE1890A4A300E16C52 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -44,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				090A46711CFD756900534E8C /* CocoaAsyncSocket.framework in Frameworks */,
 				5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,6 +69,7 @@
 		3C5191C219F0C5B600130716 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */,
 				3C5191C319F0C5B600130716 /* JSON.h */,
 				3C5191C419F0C5B600130716 /* JSONParser.h */,
 				3C5191C519F0C5B600130716 /* MD5Digest.h */,
@@ -128,8 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				3C5191C219F0C5B600130716 /* JSON */,
-				5A9FEFA81890A4A300E16C52 /* AsyncSocket.h */,
-				5A9FEFAA1890A4A300E16C52 /* AsyncUdpSocket.h */,
 				5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */,
 				5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */,
 				5A9FEFAE1890A4A300E16C52 /* NSData+Base64.h */,
@@ -146,6 +160,7 @@
 			buildPhases = (
 				5A9FEF761890A3A700E16C52 /* Sources */,
 				5A9FEF771890A3A700E16C52 /* Frameworks */,
+				090A46741CFD75EE00534E8C /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -273,6 +288,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexSocketMgr/";
 				DSTROOT = /tmp/EUExSocketMgr.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode/JSON",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -289,6 +308,10 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/uexSocketMgr/";
 				DSTROOT = /tmp/EUExSocketMgr.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode/JSON",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
