@@ -20,16 +20,21 @@
 
 @implementation EUExSocketMgr
 
--(id)initWithBrwView:(EBrowserView *) eInBrwView{
-    if (self = [super initWithBrwView:eInBrwView]) {
+//-(id)initWithBrwView:(EBrowserView *) eInBrwView{
+//    if (self = [super initWithBrwView:eInBrwView]) {
+//        _socketObjs = [NSMutableDictionary dictionary];
+//        
+//
+//        
+//    }
+//    return self;
+//}
+-(id)initWithWebViewEngine:(id<AppCanWebViewEngineObject>)engine{
+    if (self = [super initWithWebViewEngine:engine]) {
         _socketObjs = [NSMutableDictionary dictionary];
-        
-
-        
     }
     return self;
 }
-
 #pragma -mark 调试之前 一定要度note.txt 文件 不然会后悔一辈子
 #pragma mark
 
@@ -39,13 +44,13 @@
 }
 
 //创建UDPSocket
--(void)createUDPSocket:(NSMutableArray *)inArguments {
+-(NSNumber*)createUDPSocket:(NSMutableArray *)inArguments {
     NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     NSInteger inPort = [[inArguments objectAtIndex:1] integerValue];
     EUExSocket *udpSocket = [self.socketObjs objectForKey:@(inOpId)];
     if (udpSocket) {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
-        return;
+        //[self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        return @NO;
     }
     uexSocketMgrDataType dataType = uexSocketMgrDataTypeUTF8;
     if ([inArguments isKindOfClass:[NSMutableArray class]] && [inArguments count]>2) {
@@ -58,20 +63,25 @@
     BOOL succ =  [udpSocket creatUDPSocketWithPort:inPort];
     if (succ) {
         [self.socketObjs setObject:udpSocket forKey:@(inOpId)];
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        //[self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbCreateUDPSocket" arguments:ACArgsPack(@(inOpId),@2,@0)];
+        return @YES;
     }else {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+       // [self jsSuccessWithName:@"uexSocketMgr.cbCreateUDPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbCreateUDPSocket" arguments:ACArgsPack(@(inOpId),@2,@1)];
+        return @NO;
     }
 
 }
 
 //创建TCPSocket
--(void)createTCPSocket:(NSMutableArray *)inArguments {
+-(NSNumber*)createTCPSocket:(NSMutableArray *)inArguments {
     NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     EUExSocket *tcpSocket = [self.socketObjs objectForKey:@(inOpId)];
     if (tcpSocket) {
-        [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
-        return;
+        //[self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbCreateTCPSocket" arguments:ACArgsPack(@(inOpId),@2,@1)];
+        return @NO;
     }
     uexSocketMgrDataType dataType = uexSocketMgrDataTypeUTF8;
     if ([inArguments isKindOfClass:[NSMutableArray class]] && [inArguments count]>1) {
@@ -82,8 +92,9 @@
     tcpSocket.opID = inOpId;
     tcpSocket.dataType = dataType;
     [self.socketObjs setObject:tcpSocket forKey:@(inOpId)];
-    [self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-
+    //[self jsSuccessWithName:@"uexSocketMgr.cbCreateTCPSocket" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbCreateTCPSocket" arguments:ACArgsPack(@(inOpId),@2,@0)];
+    return @YES;
 }
 
 -(void)closeSocket:(NSMutableArray *)inArguments {
@@ -108,36 +119,43 @@
     NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     NSString *inRemoteAddress = [inArguments objectAtIndex:1];
     NSInteger inRemotePort = [[inArguments objectAtIndex:2] integerValue];
+    ACJSFunctionRef *func = JSFunctionArg(inArguments.lastObject);
     EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
     if (object) {
         object.Port = inRemotePort;
         object.Host = inRemoteAddress;
-        [object connectServer:inRemoteAddress port:(int)inRemotePort];
+        [object connectServer:inRemoteAddress port:(int)inRemotePort Function:func];
     }
 }
 
 -(void)sendData:(NSMutableArray *)inArguments {
     NSInteger inOpId = [[inArguments objectAtIndex:0] integerValue];
     NSString *inMsg = [inArguments objectAtIndex:1];
+    ACJSFunctionRef *func = JSFunctionArg(inArguments.lastObject);
     EUExSocket *object = [self.socketObjs objectForKey:@(inOpId)];
+    object.fun = func;
     if (object!=nil) {
         [object sendMsg:inMsg];
     }else {
-        [self jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        //[self jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:inOpId dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+        [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbSendData" arguments:ACArgsPack(@1)];
+        [func executeWithArguments:ACArgsPack(@1)];
     }
 }
 
 
 - (void)onDataCallbackWithOpID:(NSInteger)opid JSONString:(NSString *)json{
     json = [json stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onData){uexSocketMgr.onData(%@,'%@')}",@(opid),json];
-    [EUtility brwView:self.meBrwView evaluateScript:jsStr];
+    //NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onData){uexSocketMgr.onData(%@,'%@')}",@(opid),json];
+    //[EUtility brwView:self.meBrwView evaluateScript:jsStr];
+    [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.onData" arguments:ACArgsPack(@(opid),[json ac_JSONFragment])];
 
 }
 
 - (void)disconnectCallbackWithOpID:(NSInteger)opid{
-    NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onDisconnected){uexSocketMgr.onDisconnected(%ld)}",(long)opid];
-    [EUtility brwView:self.meBrwView evaluateScript:jsStr];
+    //NSString *jsStr = [NSString stringWithFormat:@"if(uexSocketMgr.onDisconnected){uexSocketMgr.onDisconnected(%ld)}",(long)opid];
+   // [EUtility brwView:self.meBrwView evaluateScript:jsStr];
+    [self.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.onDisconnected" arguments:ACArgsPack(@(opid))];
 }
 
 

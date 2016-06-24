@@ -12,6 +12,9 @@
 #import "EUExBaseDefine.h"
 #import "JSON.h"
 
+@interface EUExSocket()
+
+@end
 @implementation EUExSocket
 
 
@@ -109,8 +112,8 @@
 }
 
 //通过IP和端口连接服务器
-- (BOOL)connectServer: (NSString *) hostIP port:(UInt16) hostPort{
-
+- (BOOL)connectServer: (NSString *) hostIP port:(UInt16) hostPort Function:(ACJSFunctionRef *)func{
+    self.fun = func;
     if (self.socketType == uexSocketMgrSocketTypeTCP){
         if (self.TCPClient == nil) {
             self.TCPClient = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
@@ -125,7 +128,10 @@
             if (!succ) {
                 NSLog(@"%@ %@", [err description], [err localizedDescription]);
                 self.TCPClient = nil;
-                [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+                //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+                [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbConnected" arguments:ACArgsPack(@(self.opID),@2,@1)];
+                [func executeWithArguments:ACArgsPack(@1)];
+                func = nil;
                 return NO;
             } else {
                 PluginLog(@"Connect0000!!!");
@@ -137,7 +143,10 @@
 	if (self.socketType == uexSocketMgrSocketTypeUDP) {
 		self.Port = hostPort;
 		self.Host = hostIP;
-        [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+        [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbConnected" arguments:ACArgsPack(@(self.opID),@2,@0)];
+        [func executeWithArguments:ACArgsPack(@0)];
+        func = nil;
 		return YES;
     }
 	return NO;
@@ -202,13 +211,19 @@
 //UDP delegate
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)tag dueToError:(NSError *)error{
     PluginLog(@"NO SEND");
-    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbSendData" arguments:ACArgsPack(@(self.opID),@2,@1)];
+    [self.fun executeWithArguments:ACArgsPack(@1)];
+    self.fun = nil;
 }
 
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didSendDataWithTag:(long)tag{
     PluginLog(@"SEND SUCCESS");
     PluginLog(@"%d:%@",[sock localPort],[sock localHost]);
-    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+     [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbSendData" arguments:ACArgsPack(@(self.opID),@2,@0)];
+     [self.fun executeWithArguments:ACArgsPack(@0)];
+    self.fun = nil;
 }
 #pragma mark - Udp接受数据
 - (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data
@@ -254,8 +269,11 @@ withFilterContext:(id)filterContext
 //TCP delegate
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port{
     PluginLog(@"connect success");
-    	[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
-    	[sock readDataWithTimeout:-1 tag:0];
+    //	[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbConnected" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbConnected" arguments:ACArgsPack(@(self.opID),@2,@0)];
+    [self.fun executeWithArguments:ACArgsPack(@0)];
+    self.fun = nil;
+    [sock readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err{
@@ -267,12 +285,19 @@ withFilterContext:(id)filterContext
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag{
     PluginLog(@"send success");
-    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CSUCCESS];
+    [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbSendData" arguments:ACArgsPack(@(self.opID),@2,@0)];
+    [self.fun executeWithArguments:ACArgsPack(@0)];
+    self.fun = nil;
    
 }
 - (NSTimeInterval) socket:(GCDAsyncSocket *)sock shouldTimeoutWriteWithTag:(long)tag elapsed:(NSTimeInterval)elapsed bytesDone:(NSUInteger)length {
     PluginLog(@"发送数据到服务器超时");
-    [self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    //[self.euexObj jsSuccessWithName:@"uexSocketMgr.cbSendData" opId:self.opID dataType:UEX_CALLBACK_DATATYPE_INT intData:UEX_CFAILED];
+    [self.euexObj.webViewEngine callbackWithFunctionKeyPath:@"uexSocketMgr.cbSendData" arguments:ACArgsPack(@(self.opID),@2,@1)];
+    [self.fun executeWithArguments:ACArgsPack(@1)];
+    self.fun = nil;
+
     return -1;
 }
 #pragma mark - tcp接受数据

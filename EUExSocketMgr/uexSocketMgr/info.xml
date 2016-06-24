@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <uexplugins>
     <plugin
-        uexName="uexSocketMgr" version="3.0.8" build="8">
-        <info>8:更换为GCDAsyncSocket库,支持ipv6</info>
+        uexName="uexSocketMgr" version="4.0.0" build="9">
+        <info>9:支持引擎4.0，函数入参</info>
+        <build>8:更换为GCDAsyncSocket库,支持ipv6</build>
         <build>7:收发数据支持base64以及GBK编码</build>
         <build>6:添加IDE支持</build>
         <build>5:解决使用base64格式传输数据ios发送不成功的问题</build>
