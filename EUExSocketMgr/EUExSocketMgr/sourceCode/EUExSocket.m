@@ -135,6 +135,8 @@
                 return NO;
             } else {
                 PluginLog(@"Connect0000!!!");
+                [func executeWithArguments:ACArgsPack(@0)];
+                func = nil;
                 
                 return YES;
             }
@@ -259,6 +261,10 @@ withFilterContext:(id)filterContext
 
 - (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error{
     PluginLog(@"Close socket");
+    [self.euexObj disconnectCallbackWithOpID:self.opID];
+    if (self.UDPClient) {
+        self.UDPClient = nil;
+    }
 }
 
 

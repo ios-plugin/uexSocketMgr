@@ -125,6 +125,8 @@
         object.Port = inRemotePort;
         object.Host = inRemoteAddress;
         [object connectServer:inRemoteAddress port:(int)inRemotePort Function:func];
+    }else{
+        [func executeWithArguments:ACArgsPack(@(1))];
     }
 }
 
