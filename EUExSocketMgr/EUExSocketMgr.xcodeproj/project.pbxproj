@@ -7,9 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		090A46711CFD756900534E8C /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */; };
-		090A46751CFD75FD00534E8C /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */; };
-		21246A051D1D17A000FA5DEF /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21246A041D1D17A000FA5DEF /* AppCanKit.framework */; };
+		4238878F1D64366B0028AE3E /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */; };
+		423887931D6437260028AE3E /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423887921D6437260028AE3E /* AppCanKit.framework */; };
+		4238879C1D645DD40028AE3E /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */; };
+		423887A11D645E0E0028AE3E /* uexSocketUDPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A01D645E0E0028AE3E /* uexSocketUDPClient.m */; };
+		423887A41D645FB30028AE3E /* uexSocketHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A31D645FB30028AE3E /* uexSocketHelper.m */; };
+		423887A71D6463030028AE3E /* uexSocketTCPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A61D6463030028AE3E /* uexSocketTCPClient.m */; };
+		423887AB1D65ADF70028AE3E /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */; };
+		423887AC1D65ADF70028AE3E /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */; };
 		5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9FEF7D1890A3A700E16C52 /* Foundation.framework */; };
 		5A9FEF851890A3A700E16C52 /* EUExSocketMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */; };
 		5A9FEFB11890A4A300E16C52 /* EUExSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */; };
@@ -22,25 +27,24 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				090A46751CFD75FD00534E8C /* CocoaAsyncSocket.framework in CopyFiles */,
+				423887AB1D65ADF70028AE3E /* ReactiveCocoa.framework in CopyFiles */,
+				423887AC1D65ADF70028AE3E /* CocoaAsyncSocket.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
-		21246A041D1D17A000FA5DEF /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
-		3C5191C319F0C5B600130716 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		3C5191C419F0C5B600130716 /* JSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONParser.h; sourceTree = "<group>"; };
-		3C5191C519F0C5B600130716 /* MD5Digest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MD5Digest.h; sourceTree = "<group>"; };
-		3C5191C619F0C5B600130716 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
-		3C5191C719F0C5B600130716 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
-		3C5191C819F0C5B600130716 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
-		3C5191C919F0C5B600130716 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
-		3C5191CA19F0C5B600130716 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		3C5191CB19F0C5B600130716 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		3C76C47C18AB716900BBE8D1 /* EUExSocketMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUExSocketMgr.h; sourceTree = "<group>"; };
+		4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
+		423887921D6437260028AE3E /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
+		4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = "<group>"; };
+		4238879F1D645E0E0028AE3E /* uexSocketUDPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexSocketUDPClient.h; sourceTree = "<group>"; };
+		423887A01D645E0E0028AE3E /* uexSocketUDPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexSocketUDPClient.m; sourceTree = "<group>"; };
+		423887A21D645FB30028AE3E /* uexSocketHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexSocketHelper.h; sourceTree = "<group>"; };
+		423887A31D645FB30028AE3E /* uexSocketHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexSocketHelper.m; sourceTree = "<group>"; };
+		423887A51D6463030028AE3E /* uexSocketTCPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexSocketTCPClient.h; sourceTree = "<group>"; };
+		423887A61D6463030028AE3E /* uexSocketTCPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexSocketTCPClient.m; sourceTree = "<group>"; };
 		5A9FEF7A1890A3A700E16C52 /* libuexSocketMgr.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libuexSocketMgr.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9FEF7D1890A3A700E16C52 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5A9FEF811890A3A700E16C52 /* EUExSocketMgr-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EUExSocketMgr-Prefix.pch"; sourceTree = "<group>"; };
@@ -51,7 +55,6 @@
 		5A9FEFA61890A4A300E16C52 /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
 		5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExSocket.h; sourceTree = "<group>"; };
 		5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EUExSocket.m; sourceTree = "<group>"; };
-		5A9FEFAE1890A4A300E16C52 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,32 +62,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				090A46711CFD756900534E8C /* CocoaAsyncSocket.framework in Frameworks */,
-				21246A051D1D17A000FA5DEF /* AppCanKit.framework in Frameworks */,
+				4238878F1D64366B0028AE3E /* CocoaAsyncSocket.framework in Frameworks */,
+				423887931D6437260028AE3E /* AppCanKit.framework in Frameworks */,
 				5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */,
+				4238879C1D645DD40028AE3E /* ReactiveCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C5191C219F0C5B600130716 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				090A46701CFD756900534E8C /* CocoaAsyncSocket.framework */,
-				3C5191C319F0C5B600130716 /* JSON.h */,
-				3C5191C419F0C5B600130716 /* JSONParser.h */,
-				3C5191C519F0C5B600130716 /* MD5Digest.h */,
-				3C5191C619F0C5B600130716 /* NSObject+SBJSON.h */,
-				3C5191C719F0C5B600130716 /* NSString+SBJSON.h */,
-				3C5191C819F0C5B600130716 /* SBJSON.h */,
-				3C5191C919F0C5B600130716 /* SBJsonBase.h */,
-				3C5191CA19F0C5B600130716 /* SBJsonParser.h */,
-				3C5191CB19F0C5B600130716 /* SBJsonWriter.h */,
-			);
-			path = JSON;
-			sourceTree = "<group>";
-		};
 		5A9FEF711890A3A700E16C52 = {
 			isa = PBXGroup;
 			children = (
@@ -144,11 +131,17 @@
 		5A9FEFA71890A4A300E16C52 /* sourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				21246A041D1D17A000FA5DEF /* AppCanKit.framework */,
-				3C5191C219F0C5B600130716 /* JSON */,
+				4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */,
+				423887921D6437260028AE3E /* AppCanKit.framework */,
+				4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */,
 				5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */,
 				5A9FEFAD1890A4A300E16C52 /* EUExSocket.m */,
-				5A9FEFAE1890A4A300E16C52 /* NSData+Base64.h */,
+				4238879F1D645E0E0028AE3E /* uexSocketUDPClient.h */,
+				423887A01D645E0E0028AE3E /* uexSocketUDPClient.m */,
+				423887A51D6463030028AE3E /* uexSocketTCPClient.h */,
+				423887A61D6463030028AE3E /* uexSocketTCPClient.m */,
+				423887A21D645FB30028AE3E /* uexSocketHelper.h */,
+				423887A31D645FB30028AE3E /* uexSocketHelper.m */,
 			);
 			path = sourceCode;
 			sourceTree = "<group>";
@@ -204,8 +197,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				423887A71D6463030028AE3E /* uexSocketTCPClient.m in Sources */,
 				5A9FEF851890A3A700E16C52 /* EUExSocketMgr.m in Sources */,
+				423887A11D645E0E0028AE3E /* uexSocketUDPClient.m in Sources */,
 				5A9FEFB11890A4A300E16C52 /* EUExSocket.m in Sources */,
+				423887A41D645FB30028AE3E /* uexSocketHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

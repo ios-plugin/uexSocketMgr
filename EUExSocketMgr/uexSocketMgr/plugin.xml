@@ -7,5 +7,11 @@
         <method name="setTimeOut"></method>
         <method name="setInetAddressAndPort"></method>
         <method name="sendData"></method>
+        <method name="send"></method>
+        <method name="write"></method>
+        <method name="connect"></method>
+        <method name="createTCP"></method>
+        <method name="createUDP"></method>
+        <method name="close"></method>
     </plugin>
 </uexplugins>

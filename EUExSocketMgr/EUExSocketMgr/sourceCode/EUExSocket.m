@@ -10,7 +10,7 @@
 #import "EUExSocketMgr.h"
 #import "EUtility.h"
 #import "EUExBaseDefine.h"
-#import "JSON.h"
+
 
 @interface EUExSocket()
 
@@ -72,7 +72,7 @@
 
 - (NSString*)intStringToBinary:(long long)element{
     NSMutableString *str = [NSMutableString string];
-    NSInteger numberCopy = element;
+    long long numberCopy = element;
     for(int i = 0; i < 8; i++){
         [str insertString:((numberCopy & 1) ? @"1" : @"0") atIndex:0];
         numberCopy >>= 1;
@@ -255,7 +255,7 @@ withFilterContext:(id)filterContext
     [jsDic setValue:[GCDAsyncUdpSocket hostFromAddress:address] forKey:@"host"];
     [jsDic setValue:portStr forKey:@"port"];
     [jsDic setValue:resultString forKey:@"data"];
-    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic JSONFragment]];
+    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic ac_JSONFragment]];
 
 }
 
@@ -336,7 +336,7 @@ withFilterContext:(id)filterContext
     [jsDic setValue:@"" forKey:@"port"];
     [jsDic setValue:resultString forKey:@"data"];
     
-    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic JSONFragment]];
+    [self.euexObj onDataCallbackWithOpID:self.opID JSONString:[jsDic ac_JSONFragment]];
     [sock readDataWithTimeout:-1 tag:0];
 
 }
