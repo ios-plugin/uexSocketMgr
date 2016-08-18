@@ -2,6 +2,6 @@
 <uexplugins>
     <plugin
         uexName="uexSocketMgr" version="4.0.0" build="0">
-        <build>0:Socket功能插件</build>
+        <info>0:Socket功能插件</info>
     </plugin>
 </uexplugins>
