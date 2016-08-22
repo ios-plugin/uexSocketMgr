@@ -86,6 +86,12 @@ static inline UEX_ERROR SocketError(NSString *msg,UEX_SOCKET_ID sock,NSError * e
 
 - (void)send:(NSMutableArray *)inArguments{
     ACArgsUnpack(UEX_SOCKET_ID udp ,NSDictionary *info,ACJSFunctionRef *cb) = inArguments;
+    __block BOOL paramError = YES;
+    @onExit{
+        if (paramError) {
+            [cb executeWithArguments:ACArgsPack(uexErrorMake(1))];
+        }
+    };
     NSString *host = stringArg(info[@"host"]);
     NSNumber *port = numberArg(info[@"port"]);
     NSString *dataStr = stringArg(info[@"data"]);
@@ -96,7 +102,7 @@ static inline UEX_ERROR SocketError(NSString *msg,UEX_SOCKET_ID sock,NSError * e
     UEX_PARAM_GUARD_NOT_NIL(port);
     UEX_PARAM_GUARD_NOT_NIL(dataStr);
     UEX_PARAM_GUARD_NOT_NIL(client);
-    
+    paramError = NO;
     NSData *data = [uexSocketHelper dataFromDataStr:dataStr dataType:client.dataType];
     NSTimeInterval t = timeout ? timeout.doubleValue / 1000 : -1;
     [client sendData:data toHost:host port:port.unsignedShortValue timeout:t completion:^(NSError *error) {
@@ -132,6 +138,16 @@ static inline UEX_ERROR SocketError(NSString *msg,UEX_SOCKET_ID sock,NSError * e
 
 - (void)connect:(NSMutableArray *)inArguments{
     ACArgsUnpack(UEX_SOCKET_ID tcp,NSDictionary *info,ACJSFunctionRef *cb) = inArguments;
+    __block BOOL connected = NO;
+    __block NSError *error = nil;
+    @onExit{
+        UEX_ERROR err = kUexNoError;
+        if (!connected || error) {
+            err = SocketError(@"connect error!",tcp,error);
+        }
+        [cb executeWithArguments:ACArgsPack(err)];
+    };
+    
     NSString *host = stringArg(info[@"host"]);
     NSNumber *port = numberArg(info[@"port"]);
     NSNumber *timeout = numberArg(info[@"timeout"]);
@@ -141,23 +157,24 @@ static inline UEX_ERROR SocketError(NSString *msg,UEX_SOCKET_ID sock,NSError * e
     UEX_PARAM_GUARD_NOT_NIL(tcp);
     UEX_PARAM_GUARD_NOT_NIL(client);
     NSTimeInterval t = timeout ? timeout.doubleValue / 1000 : -1;
-    NSError *error = nil;
-    BOOL ret = [client connectToHost:host onPort:port.unsignedShortValue withTimeout:t error:&error];
-    UEX_ERROR err = kUexNoError;
-    if (!ret || error) {
-        err = SocketError(@"connect error!",tcp,error);
-    }
-    [cb executeWithArguments:ACArgsPack(err)];
+    connected = [client connectToHost:host onPort:port.unsignedShortValue withTimeout:t error:&error];
 }
 
 - (void)write:(NSMutableArray *)inArguments{
     ACArgsUnpack(UEX_SOCKET_ID tcp,NSDictionary *info,ACJSFunctionRef *cb) = inArguments;
+    __block BOOL paramError = YES;
+    @onExit{
+        if (paramError) {
+            [cb executeWithArguments:ACArgsPack(uexErrorMake(1))];
+        }
+    };
     NSString *dataStr = stringArg(info[@"data"]);
     NSNumber *timeout = numberArg(info[@"timeout"]);
     uexSocketTCPClient *client = self.tcps[tcp];
     UEX_PARAM_GUARD_NOT_NIL(tcp);
     UEX_PARAM_GUARD_NOT_NIL(client);
     UEX_PARAM_GUARD_NOT_NIL(dataStr);
+    paramError = NO;
     NSData *data = [uexSocketHelper dataFromDataStr:dataStr dataType:client.dataType];
     NSTimeInterval t = timeout ? timeout.doubleValue / 1000 : -1;
     [client writeData:data timeout:t completion:^(NSError *error) {
