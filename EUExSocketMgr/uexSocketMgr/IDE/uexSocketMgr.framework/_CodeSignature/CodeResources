@@ -4,176 +4,26 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>CocoaAsyncSocket.framework/CocoaAsyncSocket</key>
-		<data>
-		/ChUL3Bi0jr6r9MCQXDduuTSVGo=
-		</data>
-		<key>CocoaAsyncSocket.framework/Headers/CocoaAsyncSocket.h</key>
-		<data>
-		Y0SKY0wyyd0MJL4smJg23lW0lZM=
-		</data>
-		<key>CocoaAsyncSocket.framework/Headers/GCDAsyncSocket.h</key>
-		<data>
-		epdhmCIMokKCqjy5t9gOnzDF1FA=
-		</data>
-		<key>CocoaAsyncSocket.framework/Headers/GCDAsyncUdpSocket.h</key>
-		<data>
-		LH5V3wgNYRH1dy/fNu8r4lu8puI=
-		</data>
-		<key>CocoaAsyncSocket.framework/Info.plist</key>
-		<data>
-		SFTMnYrKDvolu05aM1bqMlc2Hmk=
-		</data>
-		<key>CocoaAsyncSocket.framework/Modules/module.modulemap</key>
-		<data>
-		+n94rYTWDjekX3imyh+PSyA9vgA=
-		</data>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeDirectory</key>
-		<data>
-		3YfBg6X0XDrJxOXbFEO5kiaW+b8=
-		</data>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeRequirements</key>
-		<data>
-		rZpVSg5zMx0b5EcwpKn8598EODM=
-		</data>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeResources</key>
-		<data>
-		J6pYhKAvBLlFPpWVSLezfH/SRfE=
-		</data>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeSignature</key>
-		<data>
-		1VOVpkTsbeITfJE3d7YLdhXIGl8=
-		</data>
 		<key>Info.plist</key>
 		<data>
-		Q8SNQSjMu8hHckGtFEaYMSmty6I=
+		nhfsAUkZg/EeK7UcOINsJQx/RA8=
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
-		JKbXoT98W7zj86Z2W3qbeHZe/kE=
+		VccYRc8+LJpEK2ajGtgIir/pOpk=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>CocoaAsyncSocket.framework/CocoaAsyncSocket</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			/ChUL3Bi0jr6r9MCQXDduuTSVGo=
-			</data>
-			<key>hash2</key>
-			<data>
-			R4WE+UeiQHZ2Rb4we9hNTZvPQNXrul+pgDwokYeIWlU=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/Headers/CocoaAsyncSocket.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			Y0SKY0wyyd0MJL4smJg23lW0lZM=
-			</data>
-			<key>hash2</key>
-			<data>
-			IG83oaxWdNwERCvR+Lq0RhqzygP6IMg3zGo+7mx/67A=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/Headers/GCDAsyncSocket.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			epdhmCIMokKCqjy5t9gOnzDF1FA=
-			</data>
-			<key>hash2</key>
-			<data>
-			H6tE8JXXn4PYitg4ww4Bdq3rWDOQt8G5Tg+hsNAi9xI=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/Headers/GCDAsyncUdpSocket.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			LH5V3wgNYRH1dy/fNu8r4lu8puI=
-			</data>
-			<key>hash2</key>
-			<data>
-			CAMdz3VphGMLZyKBHhxLfGK4d70mHUiuHsG45jRPi+0=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			SFTMnYrKDvolu05aM1bqMlc2Hmk=
-			</data>
-			<key>hash2</key>
-			<data>
-			lu6SkCKKtKjLsKL6ndAGC4t7yJ+tpG3E8k+mFFKeQH8=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/Modules/module.modulemap</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			+n94rYTWDjekX3imyh+PSyA9vgA=
-			</data>
-			<key>hash2</key>
-			<data>
-			RoVn8xMeEnU3Izg0DtYjYL/krI8V7qw0sa7Ggf+08Rs=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeDirectory</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			3YfBg6X0XDrJxOXbFEO5kiaW+b8=
-			</data>
-			<key>hash2</key>
-			<data>
-			LzDtuMxw6N/vgoWpUf1PK3xl8JuFO9IByf9r7aXAZgI=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeRequirements</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			rZpVSg5zMx0b5EcwpKn8598EODM=
-			</data>
-			<key>hash2</key>
-			<data>
-			kbY1D4NkLNX/HcudEjgsluAvgSglZWHnTtUMJz/m5NA=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeResources</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			J6pYhKAvBLlFPpWVSLezfH/SRfE=
-			</data>
-			<key>hash2</key>
-			<data>
-			lfTmrVBdGawjcPVs0iblCCRyEUuAY236SUaZ9sMwI0E=
-			</data>
-		</dict>
-		<key>CocoaAsyncSocket.framework/_CodeSignature/CodeSignature</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			1VOVpkTsbeITfJE3d7YLdhXIGl8=
-			</data>
-			<key>hash2</key>
-			<data>
-			4xYeoQdG8va/eNfyR72iTKqAqfPo2ZIYHMW+P3x00hQ=
-			</data>
-		</dict>
 		<key>embedded.mobileprovision</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			JKbXoT98W7zj86Z2W3qbeHZe/kE=
+			VccYRc8+LJpEK2ajGtgIir/pOpk=
 			</data>
 			<key>hash2</key>
 			<data>
-			0p8akoZIUNhnEHSrm+cwtP59I1VEbMUe0Gn2IpgCK98=
+			ejCBtnGtWqhlrYI4GRjoMJxaexgdSnhjWGPR+Vc9frw=
 			</data>
 		</dict>
 	</dict>

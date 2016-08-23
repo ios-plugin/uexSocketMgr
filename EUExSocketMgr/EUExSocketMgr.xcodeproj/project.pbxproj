@@ -288,7 +288,6 @@
 				DSTROOT = /tmp/EUExSocketMgr.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode/JSON",
 					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -309,7 +308,6 @@
 				DSTROOT = /tmp/EUExSocketMgr.dst;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode/JSON",
 					"$(PROJECT_DIR)/EUExSocketMgr/sourceCode",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
