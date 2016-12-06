@@ -26,12 +26,12 @@
 @property (nonatomic,assign)NSInteger localPort;
 @property (nonatomic,assign)NSInteger timeOutInter;
 @property (nonatomic,assign)uexSocketMgrDataType dataType;
-
+@property(nonatomic,strong) ACJSFunctionRef *fun;
 
 - (instancetype)initWithEUExObj:(EUExSocketMgr *)euexObj socketType:(uexSocketMgrSocketType)socketType;
 
 
-- (BOOL)connectServer:(NSString *) hostIP port:(UInt16)hostPort;
+- (BOOL)connectServer:(NSString *) hostIP port:(UInt16)hostPort Function:(ACJSFunctionRef*)func;
 - (void)sendMsg:(NSString *) msg;
 //-(void)setSocketTimeOut;
 - (void)closeSocket:(NSInteger)inOpId;

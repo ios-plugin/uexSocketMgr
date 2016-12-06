@@ -7,16 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EUExBase.h"
+#import "uexSocketHelper.h"
 
 
 
 
-typedef NS_ENUM(NSInteger,uexSocketMgrDataType){
-    uexSocketMgrDataTypeUTF8 = 0,
-    uexSocketMgrDataTypeBase64,
-    uexSocketMgrDataTypeGBK,
-};
+
 typedef NS_ENUM(NSInteger,uexSocketMgrSocketType){
     uexSocketMgrSocketTypeTCP = 0,
     uexSocketMgrSocketTypeUDP,

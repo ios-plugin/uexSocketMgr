@@ -1,2 +1,0 @@
-1.该plugin接口中，使用到了第三方的开源库AsyncSocket和AsyncUdpSocket，最新版本的库使用了arc，所以库所在的工程编译的时候请对这两个文件添加-fobjc-arc标志，在项目project中在other link flag中也添加-fobjc-arc标志
-2.引擎中已有AsyncSocket.m和AsyncUdpSocket.m，打包时不要引用
