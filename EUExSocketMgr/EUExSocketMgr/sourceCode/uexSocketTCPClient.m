@@ -23,7 +23,7 @@
 
 
 #import "uexSocketTCPClient.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <CocoaAsyncSocket/CocoaAsyncSocket.h>
 
 #define TCP_PROTOCOL_SIGNAL(sel) ([self rac_signalForSelector:@selector(sel) fromProtocol:@protocol(GCDAsyncSocketDelegate)])

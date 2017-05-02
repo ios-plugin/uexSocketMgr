@@ -10,7 +10,7 @@
 #import "EUExSocket.h"
 #import "uexSocketTCPClient.h"
 #import "uexSocketUDPClient.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 @interface EUExSocketMgr()
 @property (nonatomic,strong)NSMutableDictionary *socketObjs;

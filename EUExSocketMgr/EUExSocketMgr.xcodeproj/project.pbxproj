@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4234ABC21EB81D7800270809 /* ReactiveObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4234ABC11EB81D7800270809 /* ReactiveObjC.framework */; };
+		4234ABC41EB81D9500270809 /* ReactiveObjC.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4234ABC11EB81D7800270809 /* ReactiveObjC.framework */; };
 		4238878F1D64366B0028AE3E /* CocoaAsyncSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */; };
 		423887931D6437260028AE3E /* AppCanKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 423887921D6437260028AE3E /* AppCanKit.framework */; };
-		4238879C1D645DD40028AE3E /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */; };
 		423887A11D645E0E0028AE3E /* uexSocketUDPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A01D645E0E0028AE3E /* uexSocketUDPClient.m */; };
 		423887A41D645FB30028AE3E /* uexSocketHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A31D645FB30028AE3E /* uexSocketHelper.m */; };
 		423887A71D6463030028AE3E /* uexSocketTCPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 423887A61D6463030028AE3E /* uexSocketTCPClient.m */; };
-		423887AB1D65ADF70028AE3E /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */; };
 		423887AC1D65ADF70028AE3E /* CocoaAsyncSocket.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */; };
 		5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9FEF7D1890A3A700E16C52 /* Foundation.framework */; };
 		5A9FEF851890A3A700E16C52 /* EUExSocketMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */; };
@@ -27,8 +27,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
-				423887AB1D65ADF70028AE3E /* ReactiveCocoa.framework in CopyFiles */,
 				423887AC1D65ADF70028AE3E /* CocoaAsyncSocket.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4234ABC31EB81D8600270809 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = embed;
+			dstSubfolderSpec = 16;
+			files = (
+				4234ABC41EB81D9500270809 /* ReactiveObjC.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -36,9 +45,9 @@
 
 /* Begin PBXFileReference section */
 		3C76C47C18AB716900BBE8D1 /* EUExSocketMgr.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EUExSocketMgr.h; sourceTree = "<group>"; };
+		4234ABC11EB81D7800270809 /* ReactiveObjC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveObjC.framework; sourceTree = "<group>"; };
 		4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaAsyncSocket.framework; sourceTree = "<group>"; };
 		423887921D6437260028AE3E /* AppCanKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AppCanKit.framework; sourceTree = "<group>"; };
-		4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = "<group>"; };
 		4238879F1D645E0E0028AE3E /* uexSocketUDPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexSocketUDPClient.h; sourceTree = "<group>"; };
 		423887A01D645E0E0028AE3E /* uexSocketUDPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = uexSocketUDPClient.m; sourceTree = "<group>"; };
 		423887A21D645FB30028AE3E /* uexSocketHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uexSocketHelper.h; sourceTree = "<group>"; };
@@ -49,8 +58,6 @@
 		5A9FEF7D1890A3A700E16C52 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5A9FEF811890A3A700E16C52 /* EUExSocketMgr-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EUExSocketMgr-Prefix.pch"; sourceTree = "<group>"; };
 		5A9FEF841890A3A700E16C52 /* EUExSocketMgr.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EUExSocketMgr.m; sourceTree = "<group>"; };
-		5A9FEF8B1890A3A700E16C52 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		5A9FEF8E1890A3A700E16C52 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		5A9FEFA51890A4A300E16C52 /* EUExBaseDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExBaseDefine.h; sourceTree = "<group>"; };
 		5A9FEFA61890A4A300E16C52 /* EUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUtility.h; sourceTree = "<group>"; };
 		5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EUExSocket.h; sourceTree = "<group>"; };
@@ -65,7 +72,7 @@
 				4238878F1D64366B0028AE3E /* CocoaAsyncSocket.framework in Frameworks */,
 				423887931D6437260028AE3E /* AppCanKit.framework in Frameworks */,
 				5A9FEF7E1890A3A700E16C52 /* Foundation.framework in Frameworks */,
-				4238879C1D645DD40028AE3E /* ReactiveCocoa.framework in Frameworks */,
+				4234ABC21EB81D7800270809 /* ReactiveObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,8 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				5A9FEF7D1890A3A700E16C52 /* Foundation.framework */,
-				5A9FEF8B1890A3A700E16C52 /* XCTest.framework */,
-				5A9FEF8E1890A3A700E16C52 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -131,7 +136,7 @@
 		5A9FEFA71890A4A300E16C52 /* sourceCode */ = {
 			isa = PBXGroup;
 			children = (
-				4238879B1D645DD40028AE3E /* ReactiveCocoa.framework */,
+				4234ABC11EB81D7800270809 /* ReactiveObjC.framework */,
 				423887921D6437260028AE3E /* AppCanKit.framework */,
 				4238878E1D64366B0028AE3E /* CocoaAsyncSocket.framework */,
 				5A9FEFAC1890A4A300E16C52 /* EUExSocket.h */,
@@ -156,6 +161,7 @@
 				5A9FEF761890A3A700E16C52 /* Sources */,
 				5A9FEF771890A3A700E16C52 /* Frameworks */,
 				090A46741CFD75EE00534E8C /* CopyFiles */,
+				4234ABC31EB81D8600270809 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -172,7 +178,7 @@
 		5A9FEF721890A3A700E16C52 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = xll;
 			};
 			buildConfigurationList = 5A9FEF751890A3A700E16C52 /* Build configuration list for PBXProject "EUExSocketMgr" */;
@@ -222,12 +228,18 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -240,7 +252,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
@@ -260,19 +272,24 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -292,7 +309,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = uexSocketMgr;
 				SKIP_INSTALL = YES;
@@ -312,7 +329,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EUExSocketMgr/EUExSocketMgr-Prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = uexSocketMgr;
 				SKIP_INSTALL = YES;

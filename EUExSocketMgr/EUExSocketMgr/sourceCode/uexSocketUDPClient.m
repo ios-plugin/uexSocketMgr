@@ -23,7 +23,7 @@
 
 
 #import "uexSocketUDPClient.h"
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 #import <CocoaAsyncSocket/CocoaAsyncSocket.h>
 
 #define UDP_PROTOCOL_SIGNAL(sel) ([self rac_signalForSelector:@selector(sel) fromProtocol:@protocol(GCDAsyncUdpSocketDelegate)])
